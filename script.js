@@ -13,15 +13,31 @@ const MODEL_NAME = "gemini-2.0-flash"; // Correct model name for 1.5 Flash
 const BASE_API_URL = "https://generativelanguage.googleapis.com/v1beta";
 
 // Function to add a message to the chat log
+// function addMessage(message, sender) {
+//     const messageElement = document.createElement('div');
+//     messageElement.classList.add('message', `${sender}-message`);
+//     // Basic sanitization for display (consider a more robust library for production)
+//     messageElement.textContent = message;
+//     chatLog.appendChild(messageElement);
+//     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+// }
 function addMessage(message, sender) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', `${sender}-message`);
-    // Basic sanitization for display (consider a more robust library for production)
-    messageElement.textContent = message;
+
+    // **IMPORTANT CHANGE HERE:**
+    if (sender === 'bot') {
+        // For bot messages, parse Markdown into HTML
+        messageElement.innerHTML = marked.parse(message);
+    } else {
+        // For user messages, just set textContent (newlines handled by CSS)
+        // We use textContent for user input to prevent HTML injection attacks
+        messageElement.textContent = message;
+    }
+
     chatLog.appendChild(messageElement);
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
-
 // Function to send message to Gemini API
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -86,11 +102,32 @@ async function sendMessage() {
 }
 
 sendButton.addEventListener('click', sendMessage);
-userInput.addEventListener('keypress', (event) => {
+// userInput.addEventListener('keypress', (event) => {
+//     if (event.key === 'Enter') {
+//         sendMessage();
+//     }
+// });
+// Keep this one for the button click:
+sendButton.addEventListener('click', sendMessage);
+
+// Add this new keydown event listener for the textarea:
+userInput.addEventListener('keydown', (event) => {
+    // If Enter key is pressed
     if (event.key === 'Enter') {
-        sendMessage();
+        // If Shift key is NOT pressed (i.e., only Enter)
+        if (!event.shiftKey) {
+            event.preventDefault(); // Prevent default Enter behavior (like form submission)
+            sendMessage(); // Send the message to the bot
+        }
+        // If Shift key IS pressed (Shift + Enter):
+        // We do nothing here. The browser's default behavior for a <textarea>
+        // when Shift+Enter is pressed is to insert a new line.
+        // We just don't call sendMessage().
     }
 });
 
-// Initial bot message
-addMessage("Hello! How can I help you today?", 'bot');
+// ... (The rest of your script, like the initial bot message) ...
+addMessage("Hello! I'm Genie... \nHow can I help you today?", 'bot');
+
+// // Initial bot message
+// addMessage("Hello! How can I help you today?", 'bot');
