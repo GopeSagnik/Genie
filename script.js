@@ -112,7 +112,7 @@ async function sendMessage() {
     // Display a "typing..." or "thinking..." message
     const thinkingMessageElement = document.createElement('div');
     thinkingMessageElement.classList.add('message', 'bot-message');
-    thinkingMessageElement.textContent = "Genie is thinking...";
+    thinkingMessageElement.textContent = "Genie on your Request...🫡";
     chatLog.appendChild(thinkingMessageElement);
     chatLog.scrollTop = chatLog.scrollHeight;
 
@@ -151,7 +151,7 @@ async function sendMessage() {
             addMessage(`Sorry, your prompt was blocked due to: ${data.promptFeedback.blockReason}. Please try rephrasing.`, 'bot');
         }
         else {
-            addMessage("Sorry, I couldn't get a valid response from Gemini. The response structure might have changed or was empty.", 'bot');
+            addMessage("Sorry, I couldn't get a valid response. The response structure might have changed or was empty.", 'bot');
         }
 
     } catch (error) {
@@ -190,7 +190,7 @@ userInput.addEventListener('keydown', (event) => {
 });
 
 // ... (The rest of your script, like the initial bot message) ...
-addMessage("Hello! I'm Genie... \nHow can I help you today?", 'bot');
+addMessage("Hello! I'm Genie...😊 \nHow can I help you today?", 'bot');
 
 // // Initial bot message
 // addMessage("Hello! How can I help you today?", 'bot');

@@ -1,139 +1,375 @@
+/* CSS Variables for a luxurious and vibrant color palette */
+:root {
+    --bg-deep-indigo: #0a041a; /* Very deep, almost black indigo */
+    --accent-purple-light: hsla(280, 100%, 70%, 0.15);
+    --accent-blue-light: hsla(220, 100%, 70%, 0.15);
+    --accent-purple-dark: hsla(250, 100%, 50%, 0.1);
+    --accent-pink-dark: hsla(300, 100%, 50%, 0.1);
+
+    --container-bg-base: #1f0a3d; /* Base for container, will be semi-transparent */
+    --input-bg: #1f0a3d; /* Input field background */
+    --border-color: #5c2d91; /* Vibrant purple for borders/accents */
+    
+    --text-color-light: #e0d9ff; /* Soft lavender white */
+    --text-color-faded: #a79ddb; /* Muted lavender for placeholder */
+
+    --user-bubble-start: #7F00FF; /* Vibrant purple for user bubble start */
+    --user-bubble-end: #A742FF;   /* Lighter purple for user bubble end */
+    --user-text-color: #FFFFFF;
+
+    --bot-bubble-start: #006181; /* Deep sky blue for bot bubble start */
+    --bot-bubble-end: #21525c;   /* Lighter blue for bot bubble end */
+    --bot-text-color: #E0FFFF;
+
+    --send-button-start: #FF6B6B; /* Red-orange for send button start */
+    --send-button-end: #FFD166;   /* Yellow for send button end */
+    --send-button-hover-start: #FF8E8E; /* Lighter red-orange for hover */
+    --send-button-hover-end: #FFE88E;   /* Lighter yellow for hover */
+
+    --copy-button-bg: rgba(92, 45, 145, 0.6); /* Semi-transparent accent color */
+    --copy-button-hover: rgba(92, 45, 145, 0.9);
+    --copied-success: #32CD32; /* Lime green for copied success */
+}
+
 body {
-    font-family: sans-serif;
+    /* More complex, abstract background with radial and linear gradients */
+    background-color: var(--bg-deep-indigo); 
+    background-image: 
+        radial-gradient(at 20% 70%, var(--accent-purple-light) 0px, transparent 50%),
+        radial-gradient(at 80% 20%, var(--accent-blue-light) 0px, transparent 50%),
+        linear-gradient(to top right, var(--accent-purple-dark) 0%, transparent 50%),
+        linear-gradient(to bottom left, var(--accent-pink-dark) 0%, transparent 50%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Ensures background stays fixed */
+
+    font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #31535f;
     margin: 0;
+    overflow: hidden; /* Prevent body scroll if content overflows */
+    color: var(--text-color-light);
 }
 
 .chat-container {
-    width: 100%;
-    max-width: 1200px;
-    background-color: #363d48;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    max-width: 1250px; /* INCREASED MAX-WIDTH: Made the chat container wider */
+    background-color: rgba(31, 10, 61, 0.7); /* Semi-transparent container background */
+    backdrop-filter: blur(15px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(15px); /* Safari support */
+    border-radius: 25px; /* Even more rounded corners */
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.8), /* Deeper shadow */
+        0 0 0 1px rgba(255, 255, 255, 0.1); /* Subtle inner glow */
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 90vh;
+    max-height: 900px;
+    border: 1px solid var(--border-color); /* Defined border */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Smooth transition */
 }
+
+/* Optional: Subtle lift on hover for the entire chat container */
+.chat-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.9),
+        0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
 
 .chat-log {
     flex-grow: 1;
-    padding: 20px;
+    padding: 25px;
     overflow-y: auto;
-    max-height: 520px; /* Adjust as needed */
+    max-height: calc(100% - 120px); /* Adjusted to give more space for input area and padding */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) var(--container-bg-base); /* Updated scrollbar colors */
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* More space between messages */
 }
+
+/* Custom scrollbar for Webkit browsers */
+.chat-log::-webkit-scrollbar {
+    width: 8px;
+}
+.chat-log::-webkit-scrollbar-track {
+    background-color: var(--container-bg-base);
+}
+.chat-log::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 100%;
+}
+
+.message-wrapper.user {
+    justify-content: flex-end;
+}
+
+/* Avatar styles remain removed as requested */
 
 .message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 15px;
-    max-width: 80%;
+    padding: 14px 20px; /* More padding for messages */
+    border-radius: 20px; /* Smoother rounded corners */
+    max-width: 85%; /* INCREASED MAX-WIDTH: Allow messages to take more width within the container */
+    color: var(--text-color-light);
     white-space: pre-wrap;
+    word-break: break-word;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Deeper shadow for bubbles */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    position: relative; /* This is crucial for positioning the copy button */
 }
 
-.user-message {
-    background-color: #007bff;
-    color: white;
-    align-self: flex-end;
+/* Subtle hover effect for messages */
+.message:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.message.user-message {
+    background: linear-gradient(45deg, var(--user-bubble-start), var(--user-bubble-end)); /* Gradient for user bubble */
+    color: var(--user-text-color);
     margin-left: auto;
+    border-bottom-right-radius: 8px; /* Smoother asymmetric radius */
 }
 
-.bot-message {
-    background-color: #e2e3e5;
-    color: #333;
-    align-self: flex-start;
+.message.bot-message {
+    background: linear-gradient(45deg, var(--bot-bubble-start), var(--bot-bubble-end)); /* Gradient for bot bubble */
+    color: var(--bot-text-color);
     margin-right: auto;
-    border-bottom-left-radius: 2px;
-    
-    /* Make bot message a flex container to position button */
-    display: flex;
-    flex-direction: column; /* Stack content and button vertically */
-    position: relative; /* For absolute positioning of the button if desired */
+    border-bottom-left-radius: 8px; /* Smoother asymmetric radius */
+}
+
+/* Markdown rendering basic styles */
+.message strong {
+    font-weight: 700;
+    color: #FFFFFF; /* Pure white for bold text */
+}
+
+.message em {
+    font-style: italic;
+    color: #CCEEFF; /* Lighter blue for italic text */
+}
+
+.message p {
+    margin: 0 0 8px 0; /* More margin for paragraphs */
+}
+.message p:last-child {
+    margin-bottom: 0;
+}
+
+.message ul, .message ol {
+    margin-left: 25px; /* More indent for lists */
+    padding: 0;
+    list-style-type: disc;
+    color: var(--text-color-light);
+}
+
+.message li {
+    margin-bottom: 8px; /* More space between list items */
 }
 
 .input-area {
     display: flex;
-    padding: 15px;
-    border-top: 1px solid #eee;
+    padding: 20px 25px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    align-items: flex-end;
+    gap: 15px;
+    box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
 }
 
 #user-input {
     flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    padding: 15px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px; /* Slightly larger border radius */
     outline: none;
+    background-color: var(--container-bg-base); /* Matches main container for cohesion */
+    color: var(--text-color-light);
+    font-size: 1rem;
     resize: none;
+    overflow-y: auto;
+    min-height: 55px; /* Slightly taller minimum height */
+    max-height: 160px; /* Increased max height */
+    line-height: 1.6;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.4); /* Deeper inner shadow */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#user-input:focus {
+    border-color: var(--send-button-start); /* Focus border color from send button gradient */
+    box-shadow: 
+        inset 0 3px 8px rgba(0, 0, 0, 0.5), 
+        0 0 0 4px rgba(255, 107, 107, 0.5); /* Stronger outer glow on focus */
+}
+
+#user-input::placeholder {
+    color: var(--text-color-faded);
 }
 
 #send-button {
-    background-color: #28a745;
-    color: white;
+    background: linear-gradient(45deg, var(--send-button-start), var(--send-button-end)); /* Vibrant gradient */
+    color: var(--user-text-color);
     border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    margin-left: 10px;
+    padding: 16px 28px; /* Larger button */
+    border-radius: 15px; /* Matching input border-radius */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    font-size: 1.1rem; /* Slightly larger font */
+    transition: background 0.3s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* More prominent shadow */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Clearer text shadow */
 }
 
 #send-button:hover {
-    background-color: #218838;
+    background: linear-gradient(45deg, var(--send-button-hover-start), var(--send-button-hover-end)); /* Lighter hover gradient */
+    transform: translateY(-4px); /* More noticeable lift */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6); /* Enhanced shadow on hover */
 }
 
-
-.bot-message-content {
-    padding-bottom: 5px; /* Add some space above the button */
-    /* If you want the button inline with text, remove padding and adjust button position */
+#send-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 }
 
-
+/* Copy button styles */
 .copy-button {
-    background-color: #5b21b6; /* A slightly different purple */
-    color: #cbd5e1; /* Light text for button */
+    background-color: var(--copy-button-bg);
+    color: var(--text-color-light);
     border: none;
-    padding: 6px 10px;
+    padding: 7px 12px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.85rem;
-    align-self: flex-end; /* Align button to the right within the message */
-    margin-top: 8px; /* Space between text and button */
-    display: flex; /* For icon alignment */
+    font-size: 0.8rem;
+    display: flex;
     align-items: center;
-    gap: 5px; /* Space between icon and text if you add text like 'Copy' */
-    transition: background-color 0.2s ease, color 0.2s ease;
+    gap: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.3s ease; /* Added opacity transition */
+    
+    /* POSITIONING AT BOTTOM RIGHT */
+    position: absolute; /* Position absolutely within the .message */
+    bottom: 8px; /* Distance from bottom */
+    right: 8px; /* Distance from right */
+    opacity: 0.3; /* Changed to low opacity by default */
 }
 
+/* Show copy button on hover over the message bubble */
+.message:hover .copy-button {
+    opacity: 1; /* Fully visible on hover */
+}
+/* REMOVED this rule, as it's now handled by the general .copy-button:hover below */
+/* .message:hover .copy-button { opacity: 1; } */
+
 .copy-button:hover {
-    background-color: #6d28d9; /* Lighter purple on hover */
-    color: #ffffff;
+    background-color: var(--copy-button-hover);
+    color: #FFFFFF;
+    opacity: 1; /* ADDED: This makes the copy button solid when directly hovered */
 }
 
 .copy-button svg {
-    width: 14px; /* Adjust icon size */
-    height: 14px;
-    vertical-align: middle; /* Align icon better */
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
     fill: none;
-    stroke: currentColor; /* Inherit color from parent */
+    stroke: currentColor;
+    stroke-width: 2;
 }
 
-/* Optional: Positioning the copy button to the top-right corner of the message bubble */
-/* If you prefer this, you might need to adjust padding in .bot-message-content */
-.copy-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(0, 0, 0, 0.3); 
-    padding: 4px 8px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    opacity: 0.5; 
-    transition: opacity 0.3s ease;
+/* Adjust padding for message content to avoid overlap with button */
+.bot-message-content {
+    padding-bottom: 25px; /* Ensure content doesn't get hidden by the button */
 }
 
-.bot-message:hover .copy-button {
-    opacity: 1; 
+
+/* Typing indicator animation */
+.typing-indicator {
+    background-color: var(--bot-bubble-start); /* Matches bot bubble color */
+    color: var(--bot-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border-radius: 18px;
+    width: 70px;
+    height: 44px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.typing-indicator .dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--bot-text-color);
+    border-radius: 50%;
+    margin: 0 4px;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator .dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator .dot:nth-child(2) { animation-delay: -0.16s; }
+.typing-indicator .dot:nth-child(3) { animation-delay: 0s; }
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 100vh; /* Full viewport height on small screens */
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .chat-log {
+        padding: 15px;
+        max-height: calc(100% - 90px); /* Adjust for smaller input area on mobile */
+        gap: 12px;
+    }
+
+    .input-area {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .message {
+        max-width: 90%; /* Allow messages to take up more space on mobile */
+        padding: 12px 16px;
+        border-radius: 16px;
+    }
+
+    #user-input {
+        min-height: 45px;
+        padding: 12px 15px;
+        border-radius: 12px;
+    }
+
+    #send-button {
+        padding: 12px 22px;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+
+    .copy-button {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        bottom: 5px; /* Adjust for smaller screen */
+        right: 5px; /* Adjust for smaller screen */
+    }
 }
