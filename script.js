@@ -21,23 +21,86 @@ const BASE_API_URL = "https://generativelanguage.googleapis.com/v1beta";
 //     chatLog.appendChild(messageElement);
 //     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 // }
+
+
+// function addMessage(message, sender) {
+//     const messageElement = document.createElement('div');
+//     messageElement.classList.add('message', `${sender}-message`);
+
+//     // **IMPORTANT CHANGE HERE:**
+//     if (sender === 'bot') {
+//         // For bot messages, parse Markdown into HTML
+//         messageElement.innerHTML = marked.parse(message);
+//     } else {
+//         // For user messages, just set textContent (newlines handled by CSS)
+//         // We use textContent for user input to prevent HTML injection attacks
+//         messageElement.textContent = message;
+//     }
+
+//     chatLog.appendChild(messageElement);
+//     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
+// }
+
 function addMessage(message, sender) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', `${sender}-message`);
 
-    // **IMPORTANT CHANGE HERE:**
     if (sender === 'bot') {
         // For bot messages, parse Markdown into HTML
-        messageElement.innerHTML = marked.parse(message);
+        const messageContent = document.createElement('div');
+        messageContent.innerHTML = marked.parse(message);
+        messageContent.classList.add('bot-message-content'); // Add a class for specific styling
+
+        // Create the copy button
+        const copyButton = document.createElement('button');
+        copyButton.classList.add('copy-button');
+        // You can use an icon here, e.g., an SVG clipboard icon or text
+        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+        copyButton.title = 'Copy to clipboard'; // Tooltip for accessibility
+
+        // Attach click event listener to the copy button
+        copyButton.addEventListener('click', () => {
+            // Use a temporary textarea to copy the text (textContent ignores HTML, handles newlines)
+            const textToCopy = messageContent.textContent || messageContent.innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Copied!' : 'Failed to copy.';
+                console.log(msg);
+
+                // Provide visual feedback
+                const originalButtonContent = copyButton.innerHTML;
+                copyButton.innerHTML = 'Copied!';
+                copyButton.style.backgroundColor = '#10B981'; // Green for success
+                setTimeout(() => {
+                    copyButton.innerHTML = originalButtonContent;
+                    copyButton.style.backgroundColor = ''; // Reset background
+                }, 2000); // Reset after 2 seconds
+
+            } catch (err) {
+                console.error('Oops, unable to copy', err);
+            }
+            document.body.removeChild(tempTextArea);
+        });
+
+        // Append the content and the button to the message element
+        messageElement.appendChild(messageContent);
+        messageElement.appendChild(copyButton);
+
     } else {
         // For user messages, just set textContent (newlines handled by CSS)
-        // We use textContent for user input to prevent HTML injection attacks
         messageElement.textContent = message;
     }
 
     chatLog.appendChild(messageElement);
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to bottom
 }
+
+
 // Function to send message to Gemini API
 async function sendMessage() {
     const message = userInput.value.trim();

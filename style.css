@@ -46,6 +46,12 @@ body {
     color: #333;
     align-self: flex-start;
     margin-right: auto;
+    border-bottom-left-radius: 2px;
+    
+    /* Make bot message a flex container to position button */
+    display: flex;
+    flex-direction: column; /* Stack content and button vertically */
+    position: relative; /* For absolute positioning of the button if desired */
 }
 
 .input-area {
@@ -76,4 +82,58 @@ body {
 
 #send-button:hover {
     background-color: #218838;
+}
+
+
+.bot-message-content {
+    padding-bottom: 5px; /* Add some space above the button */
+    /* If you want the button inline with text, remove padding and adjust button position */
+}
+
+
+.copy-button {
+    background-color: #5b21b6; /* A slightly different purple */
+    color: #cbd5e1; /* Light text for button */
+    border: none;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    align-self: flex-end; /* Align button to the right within the message */
+    margin-top: 8px; /* Space between text and button */
+    display: flex; /* For icon alignment */
+    align-items: center;
+    gap: 5px; /* Space between icon and text if you add text like 'Copy' */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.copy-button:hover {
+    background-color: #6d28d9; /* Lighter purple on hover */
+    color: #ffffff;
+}
+
+.copy-button svg {
+    width: 14px; /* Adjust icon size */
+    height: 14px;
+    vertical-align: middle; /* Align icon better */
+    fill: none;
+    stroke: currentColor; /* Inherit color from parent */
+}
+
+/* Optional: Positioning the copy button to the top-right corner of the message bubble */
+/* If you prefer this, you might need to adjust padding in .bot-message-content */
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.3); 
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.5; 
+    transition: opacity 0.3s ease;
+}
+
+.bot-message:hover .copy-button {
+    opacity: 1; 
 }
