@@ -13,8 +13,8 @@
     --text-color-light: #e0d9ff; /* Soft lavender white */
     --text-color-faded: #a79ddb; /* Muted lavender for placeholder */
 
-    --user-bubble-start: #7F00FF; /* Vibrant purple for user bubble start */
-    --user-bubble-end: #A742FF;   /* Lighter purple for user bubble end */
+    --user-bubble-start: #420282; /* Vibrant purple for user bubble start */
+    --user-bubble-end: #3c185c;   /* Lighter purple for user bubble end */
     --user-text-color: #FFFFFF;
 
     --bot-bubble-start: #006181; /* Deep sky blue for bot bubble start */
