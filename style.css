@@ -18,7 +18,7 @@
     --user-text-color: #FFFFFF;
 
     --bot-bubble-start: #006181; /* Deep sky blue for bot bubble start */
-    --bot-bubble-end: #21525c;   /* Lighter blue for bot bubble end */
+    --bot-bubble-end: #21525c;    /* Lighter blue for bot bubble end */
     --bot-text-color: #E0FFFF;
 
     --send-button-start: #FF6B6B; /* Red-orange for send button start */
@@ -29,6 +29,15 @@
     --copy-button-bg: rgba(92, 45, 145, 0.6); /* Semi-transparent accent color */
     --copy-button-hover: rgba(92, 45, 145, 0.9);
     --copied-success: #32CD32; /* Lime green for copied success */
+}
+
+/* Ensure HTML and Body take up full height and manage overflow */
+html, body {
+    height: 100%; /* Important for percentage heights */
+    margin: 0;
+    padding: 0;
+    /* Prevent body scroll to ensure chat-container manages its own scroll */
+    overflow: hidden; 
 }
 
 body {
@@ -47,9 +56,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow: hidden; /* Prevent body scroll if content overflows */
+    min-height: 100vh; /* Fallback for older browsers not supporting dvh */
+    min-height: 100dvh; /* Use dynamic viewport height for mobile compatibility */
     color: var(--text-color-light);
 }
 
@@ -65,8 +73,8 @@ body {
         0 0 0 1px rgba(255, 255, 255, 0.1); /* Subtle inner glow */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    height: 80vh;
+    overflow: hidden; /* Prevents chat-log content from escaping borders */
+    height: 90vh; /* Give more vertical space on desktop */
     max-height: 900px;
     border: 1px solid var(--border-color); /* Defined border */
     transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Smooth transition */
@@ -80,17 +88,19 @@ body {
         0 0 0 2px rgba(255, 255, 255, 0.15);
 }
 
-
 .chat-log {
     flex-grow: 1;
-    padding: 25px;
-    overflow-y: auto;
-    max-height: calc(100% - 120px); /* Adjusted to give more space for input area and padding */
+    padding: 25px; /* Consistent padding */
+    overflow-y: auto; /* THIS IS CRUCIAL: Enables vertical scrolling when content overflows */
+    /* Calculate max-height based on container height minus input area height and padding */
+    /* Ensure this calculation reliably leaves space for the input area */
+    max-height: calc(100% - 130px); /* Adjusted for desktop - fine tune this value */
     scrollbar-width: thin;
     scrollbar-color: var(--border-color) var(--container-bg-base); /* Updated scrollbar colors */
     display: flex;
     flex-direction: column;
     gap: 18px; /* More space between messages */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS */
 }
 
 /* Custom scrollbar for Webkit browsers */
@@ -268,8 +278,6 @@ body {
 .message:hover .copy-button {
     opacity: 1; /* Fully visible on hover */
 }
-/* REMOVED this rule, as it's now handled by the general .copy-button:hover below */
-/* .message:hover .copy-button { opacity: 1; } */
 
 .copy-button:hover {
     background-color: var(--copy-button-hover);
@@ -331,7 +339,8 @@ body {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .chat-container {
-        height: 90%; /* Full viewport height on small screens */
+        height: 100vh; /* Fallback */
+        height: 100dvh; /* Use dynamic viewport height for mobile */
         width: 100%;
         border-radius: 0;
         box-shadow: none;
@@ -339,7 +348,9 @@ body {
 
     .chat-log {
         padding: 15px;
-        max-height: calc(100% - 90px); /* Adjust for smaller input area on mobile */
+        /* Re-calculate max-height based on the new chat-container height and mobile input area */
+        /* Make sure this reliably leaves space for the input area + padding */
+        max-height: calc(100% - 100px); /* Adjusted for mobile - fine tune this value */
         gap: 12px;
     }
 
