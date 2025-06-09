@@ -66,7 +66,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 90vh;
+    height: 80vh;
     max-height: 900px;
     border: 1px solid var(--border-color); /* Defined border */
     transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Smooth transition */
@@ -331,7 +331,7 @@ body {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .chat-container {
-        height: 100vh; /* Full viewport height on small screens */
+        height: 90%; /* Full viewport height on small screens */
         width: 100%;
         border-radius: 0;
         box-shadow: none;
