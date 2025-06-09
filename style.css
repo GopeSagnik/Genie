@@ -11,7 +11,6 @@ body {
 .chat-container {
     width: 100%;
     max-width: 1200px;
-    max-height: 700px;
     background-color: #363d48;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -24,7 +23,7 @@ body {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
-    max-height: 900px; /* Adjust as needed */
+    max-height: 600px; /* Adjust as needed */
 }
 
 .message {
