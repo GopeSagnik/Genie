@@ -15,7 +15,7 @@
     
     <!-- Link to your CSS file for styling -->
     <link rel="stylesheet" href="style.css">
-    
+    <link rel="stylesheet" href="genie-info.css">
     <!-- Include marked.js for Markdown parsing of bot responses -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -36,7 +36,31 @@
             <button id="send-button">Send</button>
         </div>
     </div>
+    <button id="genie-info-button" class="genie-info-button" aria-label="About This AI Assistant">
+        <img src="Bot.svg" alt="Bot Logo" class="bot-logo-icon">
+        </button>
+
+    <div id="genie-info-popup-overlay" class="genie-info-popup-overlay">
+        <div class="genie-info-popup-content">
+            <button class="genie-info-popup-close-button">&times;</button>
+            <h2 class="genie-info-popup-title">About Genie</h2>
+            <div class="genie-info-popup-text">
+                <p>This AI assistant is powered by Google's Gemini API, a large language model capable of generating human-like text, translating languages, writing different kinds of creative content, and answering your questions in an informative way.</p>
+                <h3>What I Can Do:</h3>
+                <ul>
+                    <li>Answer your questions on a wide range of topics.</li>
+                    <li>Summarize articles, documents, or concepts.</li>
+                    <li>Generate creative text formats like poems, code, scripts, musical pieces, email, letters, etc.</li>
+                    <li>Help with brainstorming ideas.</li>
+                    <li>Provide explanations and tutorials.</li>
+                </ul>
+                <p>Feel free to ask me anything!</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Link to your JavaScript file for functionality -->
     <script src="script.js"></script>
+    <script src="genie-info.js" defer></script>
 </body>
 </html>
