@@ -158,6 +158,10 @@ body {
     color: var(--bot-text-color);
     margin-right: auto;
     border-bottom-left-radius: 8px; /* Smoother asymmetric radius */
+    line-height: 1.4;
+    margin-top: 0;
+    margin-bottom: 1px;
+    font-family: "Lexend";;
 }
 
 /* Markdown rendering basic styles */
@@ -172,7 +176,7 @@ body {
 }
 
 .message p {
-    margin: 0 0 8px 0; /* More margin for paragraphs */
+    margin: 0 0 0.5px 0; /* More margin for paragraphs */
 }
 .message p:last-child {
     margin-bottom: 0;
@@ -183,10 +187,12 @@ body {
     padding: 0;
     list-style-type: disc;
     color: var(--text-color-light);
+    margin-top: 7px;
+    margin-bottom: 5px;
 }
 
 .message li {
-    margin-bottom: 8px; /* More space between list items */
+    margin-bottom: 0.8px; /* More space between list items */
 }
 
 .input-area {
