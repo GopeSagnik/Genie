@@ -29,6 +29,8 @@
     --copy-button-bg: rgba(92, 45, 145, 0.6); /* Semi-transparent accent color */
     --copy-button-hover: rgba(92, 45, 145, 0.9);
     --copied-success: #32CD32; /* Lime green for copied success */
+
+    --message-base-font-size: 1rem;
 }
 
 /* Ensure HTML and Body take up full height and manage overflow */
@@ -94,7 +96,7 @@ body {
     overflow-y: auto; /* THIS IS CRUCIAL: Enables vertical scrolling when content overflows */
     /* Calculate max-height based on container height minus input area height and padding */
     /* Ensure this calculation reliably leaves space for the input area */
-    max-height: calc(100% - 130px); /* Adjusted for desktop - fine tune this value */
+    max-height: calc(100% - 180px); /* Adjusted for desktop - fine tune this value */
     scrollbar-width: thin;
     scrollbar-color: var(--border-color) var(--container-bg-base); /* Updated scrollbar colors */
     display: flex;
@@ -133,11 +135,13 @@ body {
     border-radius: 20px; /* Smoother rounded corners */
     max-width: 85%; /* INCREASED MAX-WIDTH: Allow messages to take more width within the container */
     color: var(--text-color-light);
-    white-space: pre-wrap;
-    word-break: break-word;
+    white-space: pre-wrap; /* Preserves newlines and spaces */
+    overflow-wrap: break-word; /* Breaks long words, modern alternative to word-break */
+    word-break: break-word; /* Fallback for older browsers (for word-break) */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Deeper shadow for bubbles */
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     position: relative; /* This is crucial for positioning the copy button */
+    font-size: var(--message-base-font-size);
 }
 
 /* Subtle hover effect for messages */
@@ -161,7 +165,7 @@ body {
     line-height: 1.4;
     margin-top: 0;
     margin-bottom: 1px;
-    font-family: "Lexend";;
+    font-family: "Lexend";
 }
 
 /* Markdown rendering basic styles */
@@ -176,7 +180,7 @@ body {
 }
 
 .message p {
-    margin: 0 0 0.5px 0; /* More margin for paragraphs */
+    margin: 0 0 0.25px 0; /* More margin for paragraphs */
 }
 .message p:last-child {
     margin-bottom: 0;
@@ -187,12 +191,46 @@ body {
     padding: 0;
     list-style-type: disc;
     color: var(--text-color-light);
-    margin-top: 7px;
-    margin-bottom: 5px;
+    margin-top: 1.5px;
+    margin-bottom: 0.5px;
 }
 
 .message li {
-    margin-bottom: 0.8px; /* More space between list items */
+    margin-bottom: 0px; /* More space between list items */
+}
+
+
+.message pre {
+    /* Code blocks typically have specific formatting */
+    background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background for code */
+    border-radius: 8px;
+    padding: 10px; /* Padding inside the code block */
+    overflow-x: auto; /* IMPORTANT: Adds horizontal scroll for long lines of code */
+    word-wrap: normal; /* Prevent breaking words unnecessarily inside pre */
+    word-break: normal; /* Prevent breaking words unnecessarily inside pre */
+    white-space: pre; /* Ensures original whitespace and newlines are preserved */
+    /* Let the parent's padding contain it, overflow-x handles too-long lines */
+    max-width: 100%; 
+    box-sizing: border-box; /* Include padding in width calculation */
+    margin: 10px 0; /* Margin above and below the code block */
+}
+
+.message pre code {
+    /* Styling for the code text itself inside a pre block */
+    font-family: 'Courier New', monospace; /* Monospace font */
+    font-size: 0.9em; /* Slightly smaller font */
+    color: #F8F8F2; /* Light text for readability on dark background */
+}
+
+.message code {
+    /* Styling for inline code (not in <pre> tags) */
+    background-color: rgba(122, 81, 123, 0);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    word-break: break-word; /* Allow inline code to break words if too long */
+    overflow-wrap: break-word;
 }
 
 .input-area {
@@ -342,6 +380,39 @@ body {
     }
 }
 
+/* Font Size Controls Styling */
+.font-size-controls {
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+    padding: 10px 25px; /* Match container padding */
+    border-bottom: 1px solid var(--border-color); /* Separator line */
+    background-color: var(--input-bg); /* Match input area background */
+    gap: 8px; /* Space between buttons */
+}
+
+.font-size-controls button {
+    background-color: var(--copy-button-bg); /* Use existing color variable */
+    color: var(--text-color-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Smaller font size for buttons */
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.font-size-controls button:hover {
+    background-color: var(--copy-button-hover);
+    transform: translateY(-1px);
+}
+
+.font-size-controls button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .chat-container {
@@ -356,8 +427,18 @@ body {
         padding: 15px;
         /* Re-calculate max-height based on the new chat-container height and mobile input area */
         /* Make sure this reliably leaves space for the input area + padding */
-        max-height: calc(100% - 100px); /* Adjusted for mobile - fine tune this value */
+        max-height: calc(100% - 150px); /* Adjusted for mobile - fine tune this value */
         gap: 12px;
+    
+    }
+
+    .font-size-controls {
+        padding: 8px 15px;
+    }
+
+    .font-size-controls button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
     }
 
     .input-area {
